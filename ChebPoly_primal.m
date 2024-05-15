@@ -6,7 +6,7 @@
 % s.to: p is a polynomial of degree strictly less than deg(m_k)
 %  and: (c >= m_k - p and c >= p - m_k) on Omega
 %
-% This is done by solving a semidefinite program (SDP) truncated at level t
+% This is done by solving a semidefinite program (SDP) truncated at level s
 % Note: to be executed, ChebPoly_primal requires GloptiPoly 3 
 
 % Inputs:
@@ -16,7 +16,7 @@
 %  -> B: the euclidean ball
 %  -> C: the cross-polytope
 %  -> S: the simplex 
-% t: the truncation level
+% s: the truncation level
 
 % Outputs:
 % err:      the optimal value of the SDP 
@@ -28,7 +28,7 @@
 % Send comments to simon.foucart@centraliens.net
 
 %%
-function [err,chebpoly] = ChebPoly_primal(k,Omega,t)
+function [err,chebpoly] = ChebPoly_primal(k,Omega,s)
 
 %% the parameters of the problem
 d = length(k);  % number of variables
@@ -83,7 +83,7 @@ end
 % the SOS multipliers
 const_p = [];
 for h = 1:length(g)
-    [aux1, aux2] = polynomial([x],t-2);
+    [aux1, aux2] = polynomial([x],s-2);
     q_p{h} = aux1;
     coef_q_p{h} = aux2;
     const_p = [const_p; sos(q_p{h})];
@@ -95,7 +95,7 @@ end
 const_p = [const_p; sos(const_p_aux)];
 const_m = [];
 for h = 1:length(g)
-    [aux1, aux2] = polynomial([x],t-2);
+    [aux1, aux2] = polynomial([x],s-2);
     q_m{h} = aux1;
     coef_q_m{h} = aux2;
     const_m = [const_m; sos(q_m{h})];
